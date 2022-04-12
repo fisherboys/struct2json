@@ -1,5 +1,6 @@
 # struct2json
-json及struct之间的转换库，依赖cJSON库，未对cJSON进行侵入性更改。
+实现C语言结构体与 JSON 快速相互转换。
+依赖cJSON库，未对cJSON进行任何更改。
 
 # How to start
 `git clone --recursive https://github.com/fisherboys/struct2json.git`
