@@ -43,7 +43,7 @@ err_out_label:
 }
 
 /* strdup() isn't standard C. It is a POSIX extension. */
-static char *_s2j_strdup(const char *s)
+char *s2j_strdup(const char *s)
 {
   size_t len = 0;
   char *new = NULL;
@@ -211,7 +211,7 @@ int _deserialize(const obj_type_info_t *obj_info, void *obj_addr, const cJSON **
     GET_ITEM_AND_CHECK
     p_value = cJSON_GetStringValue(item);
     if (p_value) {
-      *(char **)this_obj_addr = _s2j_strdup((char *)p_value);
+      *(char **)this_obj_addr = s2j_strdup((char *)p_value);
     }
     break;
   case OBJ_TYPE_STRUCT:

@@ -52,6 +52,8 @@ void example_case_struct_with_number(void) {
   s2j_case1_t result = { 0 };
   char *json_str = NULL;
 
+  printf("==============================\n");
+  printf("===========Case 1=============\n");
   /* Step2. Initialize */
   s2j_init(&s2j_case1_struct_type, &data);
   s2j_init(&s2j_case1_struct_type, &result);
@@ -72,7 +74,7 @@ void example_case_struct_with_number(void) {
     printf("Case1 deserialize failed\n");
     goto failure;
   }
-  printf("Deserialized result:\nnum1[%d], num2[%d], num3[%lf]\n", result.num1, result.num2, result.num3);
+  printf("Deserialized result:\nnum1[%d], num2[%d], num3[%lf]\n\n", result.num1, result.num2, result.num3);
 
 failure:
   /* Step4. release */

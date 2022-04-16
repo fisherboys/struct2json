@@ -69,6 +69,13 @@ int s2j_deserialize(const char *json_str, const obj_type_info_t *obj_info, void 
  */
 void s2j_fini(const obj_type_info_t *obj_info, const void *obj_addr);
 
+
+/* Utils functions below */
+/**
+ * @brief strdup 
+ */
+char *s2j_strdup(const char *s);
+
 #ifdef __cplusplus
 }
 #endif
