@@ -38,7 +38,7 @@ typedef struct obj_type_info {
  * @param obj_info: The description of object.
  * @param obj_addr: The pointer to object.
  */
-void s2j_init(const obj_type_info_t *obj_info, void *obj_addr);
+void cjson_init(const obj_type_info_t *obj_info, void *obj_addr);
 
 /**
  * @brief Serialize struct data to json string.
@@ -48,7 +48,7 @@ void s2j_init(const obj_type_info_t *obj_info, void *obj_addr);
  * @return NULL: Serialized failed.
  *         NOT NULL: Serialized json string, must free later, or it would be memory leak.
  */
-char* s2j_serialize(const obj_type_info_t *obj_info, const void *obj_addr);
+char* cjson_serialize(const obj_type_info_t *obj_info, const void *obj_addr);
 
 /**
  * @brief Deserialize json string to struct data.
@@ -59,7 +59,7 @@ char* s2j_serialize(const obj_type_info_t *obj_info, const void *obj_addr);
  * @return 0: SUCCESS
  *         <0: FAILURE
  */
-int s2j_deserialize(const char *json_str, const obj_type_info_t *obj_info, void *obj_addr);
+int cjson_deserialize(const char *json_str, const obj_type_info_t *obj_info, void *obj_addr);
 
 /**
  * @brief Release resouces when serializing or deserializing.
@@ -67,14 +67,14 @@ int s2j_deserialize(const char *json_str, const obj_type_info_t *obj_info, void 
  * @param obj_info: The description of object.
  * @param obj_addr: The pointer to object.
  */
-void s2j_fini(const obj_type_info_t *obj_info, const void *obj_addr);
+void cjson_fini(const obj_type_info_t *obj_info, const void *obj_addr);
 
 
 /* Utils functions below */
 /**
  * @brief strdup 
  */
-char *s2j_strdup(const char *s);
+char *cjson_strdup(const char *s);
 
 #ifdef __cplusplus
 }

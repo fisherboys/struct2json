@@ -43,7 +43,7 @@ err_out_label:
 }
 
 /* strdup() isn't standard C. It is a POSIX extension. */
-char *s2j_strdup(const char *s)
+char *cjson_strdup(const char *s)
 {
   size_t len = 0;
   char *new = NULL;
@@ -89,7 +89,7 @@ static void _init_typed_obj(const obj_type_info_t *type, const void *typed_obj_p
   }
 }
 
-void s2j_init(const obj_type_info_t *obj_info, void *obj_addr)
+void cjson_init(const obj_type_info_t *obj_info, void *obj_addr)
 {
   _init_typed_obj(obj_info, obj_addr);
 }
@@ -155,7 +155,7 @@ err_out_label:
   return ret;
 }
 
-char *s2j_serialize(const obj_type_info_t *obj_info, const void *obj_addr)
+char *cjson_serialize(const obj_type_info_t *obj_info, const void *obj_addr)
 {
   char *json_str = NULL;
   int ret = 0;
@@ -211,7 +211,7 @@ int _deserialize(const obj_type_info_t *obj_info, void *obj_addr, const cJSON **
     GET_ITEM_AND_CHECK
     p_value = cJSON_GetStringValue(item);
     if (p_value) {
-      *(char **)this_obj_addr = s2j_strdup((char *)p_value);
+      *(char **)this_obj_addr = cjson_strdup((char *)p_value);
     }
     break;
   case OBJ_TYPE_STRUCT:
@@ -241,7 +241,7 @@ err_out_label:
   return ret;
 }
 
-int s2j_deserialize(const char *json_str, const obj_type_info_t *obj_info, void *obj_addr)
+int cjson_deserialize(const char *json_str, const obj_type_info_t *obj_info, void *obj_addr)
 {
   int ret = 0;
   cJSON *root = NULL;
@@ -287,7 +287,7 @@ static void _fini_typed_obj(const obj_type_info_t *type, const void *typed_obj_p
   }
 }
 
-void s2j_fini(const obj_type_info_t *obj_info, const void *obj_addr)
+void cjson_fini(const obj_type_info_t *obj_info, const void *obj_addr)
 {
   _fini_typed_obj(obj_info, obj_addr);
 }
