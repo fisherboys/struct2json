@@ -19,6 +19,7 @@ typedef enum {
   OBJ_TYPE_DOUBLE,
   OBJ_TYPE_STRING,
   OBJ_TYPE_STRUCT,
+  OBJ_TYPE_VECTOR,
 } obj_type_e;
 
 typedef struct obj_type_info {

@@ -16,6 +16,7 @@ set(CMAKE_BUILD_TYPE Debug)
 add_library(struct2json SHARED 
     "${PROJECT_SOURCE_DIR}/cJSON/cJSON.c"
     "${PROJECT_SOURCE_DIR}/source/struct2json.c"
+    "${PROJECT_SOURCE_DIR}/source/util_vector.c"
 )
 
 include_directories(

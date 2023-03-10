@@ -94,7 +94,7 @@ void cjson_init(const obj_type_info_t *obj_info, void *obj_addr)
   _init_typed_obj(obj_info, obj_addr);
 }
 
-int _serialize(const obj_type_info_t *obj_info, const void *obj_addr, cJSON **json_obj)
+int _serialize(const obj_type_info_t *obj_info, const void *obj_addr, int is_vector, cJSON **json_obj)
 {
   int ret = 0;
   double value_number = 0;
@@ -147,6 +147,36 @@ int _serialize(const obj_type_info_t *obj_info, const void *obj_addr, cJSON **js
       ++obj_info;
     }
     break;
+  case OBJ_TYPE_VECTOR:
+    if (is_array_item) {
+      item = root;
+    } else {
+      item = cJSON_GetObjectItem(root, obj_info->obj_name);
+    }
+    /* do not contain the obj */
+    if (NULL == item) {
+      break;
+    }
+    if (!cJSON_IsArray(item)) {
+      ret = -1;
+      goto err_out_label;
+    }
+    ret = _get_size(obj_info->child, &obj_size);
+    if (ret < 0) {
+      goto err_out_label;
+    }
+    p_value = malloc(obj_size);
+    cJSON_ArrayForEach(sub_item, item)
+    {
+      ret = _serialize(obj_info->child, p_value, 1, &sub_item);
+      if (ret < 0) {
+        goto err_out_label;
+      }
+      vector_push_back((vector_t *)this_obj_addr, p_value, obj_size, 1);
+      ++i;
+    }
+    ahpl_free(p_value);
+    break;
   default:
     break;
   }
@@ -163,7 +193,7 @@ char *cjson_serialize(const obj_type_info_t *obj_info, const void *obj_addr)
   if (NULL == root) {
     return NULL;
   }
-  ret = _serialize(obj_info, obj_addr, &root);
+  ret = _serialize(obj_info, obj_addr, 0, &root);
   if (0 != ret) {
     goto err_out_label;
   }
@@ -182,7 +212,7 @@ err_out_label:
     break;                                                                                                             \
   }
 
-int _deserialize(const obj_type_info_t *obj_info, void *obj_addr, const cJSON **json_obj)
+int _deserialize(const obj_type_info_t *obj_info, void *obj_addr, int is_vector, const cJSON **json_obj)
 {
   int ret = 0;
   void *this_obj_addr = NULL;
@@ -232,6 +262,36 @@ int _deserialize(const obj_type_info_t *obj_info, void *obj_addr, const cJSON **
       }
       ++obj_info;
     }
+    break;
+  case OBJ_TYPE_VECTOR:
+    if (is_vector) {
+      item = root;
+    } else {
+      item = cJSON_GetObjectItem(root, obj_info->obj_name);
+    }
+    /* do not contain the obj */
+    if (NULL == item) {
+      break;
+    }
+    if (!cJSON_IsArray(item)) {
+      ret = -1;
+      goto err_out_label;
+    }
+    ret = _get_size(obj_info->child, &obj_size);
+    if (ret < 0) {
+      goto err_out_label;
+    }
+    p_value = malloc(obj_size);
+    cJSON_ArrayForEach(sub_item, item)
+    {
+      ret = _deserialize(obj_info->child, p_value, 1, &sub_item);
+      if (ret < 0) {
+        goto err_out_label;
+      }
+      vector_push_back((vector_t *)this_obj_addr, p_value, obj_size, 1);
+      ++i;
+    }
+    ahpl_free(p_value);
     break;
   default:
     break;
